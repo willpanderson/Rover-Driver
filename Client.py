@@ -11,8 +11,8 @@ import pygame
 from pygame.locals import *
 
 
-#HOST = '192.168.43.179'
-HOST = 'localhost'
+HOST = input("Enter the Wireless LAN IP Address of the Rover: ") 
+#HOST = 'localhost'
 
 controller_command = 'A'
 
