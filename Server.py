@@ -10,8 +10,8 @@ import time
 import struct
 
 
-#HOST = '192.168.43.179'
-HOST = 'localhost'
+HOST = input("Enter the Wireless LAN IP Address: ") 
+#HOST = 'localhost'
 
 FORWARD = 'ABS_RZ'
 BACKWARD = 'ABS_Z'
