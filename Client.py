@@ -1,5 +1,6 @@
 """
-Gregory Ferguson
+Source code orignally authored by Gregory Ferguson
+revised by William Anderson 11/25/20
 """
 
 import socket
