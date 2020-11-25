@@ -10,7 +10,7 @@ import time
 import struct
 
 
-HOST = input("Enter the Wireless LAN IP Address: ") 
+HOST = input("Enter the Wireless LAN IP Address of the Rover: ") 
 #HOST = 'localhost'
 
 FORWARD = 'ABS_RZ'
