@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rover-driver-config
+  labels:
+    app: rover-driver
+    component: server
+    tier: backend
+data:
+  ROVER_IP: "192.168.1.100"
+  ROVER_HOST: "0.0.0.0"
+  ARDUINO_COM_PORT: "COM4"
+  L_MOTOR_PIN: "11"
+  R_MOTOR_PIN: "12"
+  MOTOR_TOGGLE_PIN: "24"

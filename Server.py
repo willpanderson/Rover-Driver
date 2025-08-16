@@ -9,22 +9,15 @@ import msvcrt
 import pyfirmata
 import time
 import struct
-
-
-HOST = input("Enter the Wireless LAN IP Address of the Rover: ") 
-#HOST = 'localhost'
+import os
 
 FORWARD = 'ABS_RZ'
 BACKWARD = 'ABS_Z'
 
-board =             pyfirmata.ArduinoMega('COM4')
-l_motor_pin =       board.get_pin('d:11:p')
-r_motor_pin =       board.get_pin('d:12:p')
-motor_toggle_pin =  board.get_pin('d:24:o')
-
-# constantly updates statuses for example if reading analog input from potentiometer
-it = pyfirmata.util.Iterator(board)
-it.start()
+board = None
+l_motor_pin = None
+r_motor_pin = None
+motor_toggle_pin = None
 
 controller_command = 'A'
 
@@ -85,17 +78,16 @@ def Client_Send(clientsocket, data):
 #Then convert to list to be used later on, data can be any type.
 def Client_Receive(clientsocket):
     global ser
-    counter = 0
-    while (counter < 1000):
+    while True:
 
         # no forward or reverse command, stop
         motor_toggle_pin.write(0)
         l_motor_pin.write(.49804)
         r_motor_pin.write(.49804)
 
-        counter += 1
-
-        data = (clientsocket.recv(1024))
+        data = clientsocket.recv(1024)
+        if not data:
+            break
 
         strings = data.decode('utf8')
 
@@ -136,7 +128,23 @@ def Client_Receive(clientsocket):
 
 
 def main():
+    global board, l_motor_pin, r_motor_pin, motor_toggle_pin
+    HOST = os.environ.get("ROVER_HOST") or input("Enter the Wireless LAN IP Address of the Rover: ")
+    com_port = os.environ.get("ARDUINO_COM_PORT", "COM4")
 
+    board = pyfirmata.ArduinoMega(com_port)
+
+    l_pin_num = os.environ.get("L_MOTOR_PIN", "11")
+    r_pin_num = os.environ.get("R_MOTOR_PIN", "12")
+    toggle_pin_num = os.environ.get("MOTOR_TOGGLE_PIN", "24")
+
+    l_motor_pin = board.get_pin(f'd:{l_pin_num}:p')
+    r_motor_pin = board.get_pin(f'd:{r_pin_num}:p')
+    motor_toggle_pin = board.get_pin(f'd:{toggle_pin_num}:o')
+
+    # constantly updates statuses for example if reading analog input from potentiometer
+    it = pyfirmata.util.Iterator(board)
+    it.start()
 
     #################################
     # Server and Client Setup

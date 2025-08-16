@@ -7,13 +7,11 @@ import socket
 import threading
 import ast
 import time
+import os
 from inputs import get_gamepad
 import pygame
 from pygame.locals import *
 
-
-HOST = input("Enter the Wireless LAN IP Address of the Rover: ") 
-#HOST = 'localhost'
 
 controller_command = 'A'
 
@@ -110,10 +108,13 @@ def receive(threadName, socket):
 
 def main():
 
+    host = os.environ.get("ROVER_IP")
+    if not host:
+        host = input("Enter the Wireless LAN IP Address of the Rover: ")
 
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    s.connect((HOST, 5220))
+    s.connect((host, 5220))
 
     print("Connected")
 
